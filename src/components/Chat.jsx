@@ -14,25 +14,18 @@ function Chat() {
     const [channel, setChannel] = useState(null);
     const [text, setText] = useState("");
     
-    // const messages = []
     
     const roomsList = ["general"];
     let scrollDiv = useRef(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async() => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         console.log(scrollDiv)
         let token = "";
-
         if (!email) {
             history.push("/");
         }
-
         setLoading(true)
-
         try {
           token = await getToken(email);
-        //   console.log(token)
         } catch {
           throw new Error("Unable to get token, please reload this page");
         }
@@ -50,12 +43,9 @@ function Chat() {
         });
 
         client.on("channelJoined", async (channel) => {
-            // getting list of all messages since this is an existing channel
             const newMessages = await channel.getMessages();
             console.log(newMessages)
-            // messages.push(newMessages.items || [])
             setMessages(newMessages.items || []);
-            // scrollToBottom();
           });
         
           try {
@@ -71,7 +61,6 @@ function Chat() {
               });
           
               joinChannel(channel);
-            //   console.log("channel:"+channel)
             } catch {
               throw new Error("Unable to create channel, please reload this page");
             }
@@ -93,7 +82,6 @@ function Chat() {
        channel.on('messageAdded', function(message) {
         handleMessageAdded(message)
       });
-    //    scrollToBottom();
      };
 
 
@@ -111,7 +99,6 @@ function Chat() {
 
       const handleMessageAdded = message => {
         setMessages(messages =>[...messages, message]);
-        // messages.push(message)
         console.log(message)
         console.log("messages:"+messages)
         scrollToBottom();
